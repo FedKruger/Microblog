@@ -10,6 +10,7 @@ import logging
 import os
 from flask_mail import Mail
 from flask_bootstrap import Bootstrap
+from flask_moment import Moment
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -22,6 +23,7 @@ bootstrap = Bootstrap(app)
 login = LoginManager(app)
 login.login_view = 'login'
 login.login_massage = "Пожалуйста, войдите, чтобы открыть эту страницу."
+moment = Moment(app)
 
 if not app.debug:
     if app.config['MAIL_SERVER']:
