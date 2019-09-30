@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -7,6 +9,7 @@ from logging.handlers import RotatingFileHandler, SMTPHandler
 import logging
 import os
 from flask_mail import Mail
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -15,6 +18,10 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
+bootstrap = Bootstrap(app)
+login = LoginManager(app)
+login.login_view = 'login'
+login.login_massage = "Пожалуйста, войдите, чтобы открыть эту страницу."
 
 if not app.debug:
     if app.config['MAIL_SERVER']:
