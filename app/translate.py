@@ -1,16 +1,16 @@
 import json
 import requests
 from flask_babel import _
-from app import app
+from flask import current_app
 
 
 def translate(text, lang):
-    if 'YA_TRANSLATOR_KEY' not in app.config or \
-            not app.config['YA_TRANSLATOR_KEY']:
+    if 'YA_TRANSLATOR_KEY' not in current_app.config or \
+            not current_app.config['YA_TRANSLATOR_KEY']:
         return _('Error: the translation service is not configured.')
-    auth = {'API_Key': app.config['YA_TRANSLATOR_KEY']}
-    r = requests.get('https://translate.yandex.net/api/v1.5/tr.json/translate'.format(
-                         text, lang), headers=auth)
+    auth = current_app.config['YA_TRANSLATOR_KEY']
+    r = requests.get('https://translate.yandex.net/api/v1.5/tr.json/translate?key={}&text={}&lang={}'.format(
+        auth, text, lang))
     if r.status_code != 200:
         return _('Error: the translation service failed.')
-    return json.loads(r.content.decode('utf-8-sig'))
+    return json.loads(r.content.decode('utf-8'))
