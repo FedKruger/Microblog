@@ -28,8 +28,8 @@ def index():
         language = guess_language(form.post.data)
         if language == 'UNKNOWN' or len(language) > 5:
             language = ''
-        post = Post(body=form.post.data, author=current_user,
-                    language=language)
+        post = Post(body=form.post.data, language=language,
+                    author=current_user)
         db.session.add(post)
         db.session.commit()
         flash(_('Your post is now live!'))
@@ -125,8 +125,9 @@ def unfollow(username):
     return redirect(url_for('main.user', username=username))
 
 
-
-#@bp.route('/translate', methods=['POST'])
-#def translate_text():
-    #return jsonify({'text': translate((request.form['text'],
-   #                                    request.form['lang']))})
+@bp.route('/translate', methods=['POST'])
+@login_required
+def translate_text():
+    return jsonify({'text': translate(request.form['text'],
+                                      request.form['source_language'],
+                                      request.form['dest_language'])})
